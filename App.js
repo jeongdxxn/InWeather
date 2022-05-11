@@ -50,7 +50,7 @@ export default function App() {
     );
     const json = await response.json();
     setDays(json.daily);
-    console.log(days);
+    // console.log(days);
   }
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function App() {
             <View key={idx} style={styles.day}>
               <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                 <Text style={styles.temp}>{parseFloat(day.temp.day).toFixed(1)}</Text>
-                <Fontisto name={icons[day.weather[0].main]} size="68" color="black" />
+                <Fontisto style={styles.icon} name={icons[day.weather[0].main]} />
               </View>
               <Text style={styles.description}>{day.weather[0].main}</Text>
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
@@ -118,5 +118,8 @@ const styles = StyleSheet.create({
   },
   tinyText: {
     fontSize: 20,
+  },
+  icon: {
+    fontSize: 68,
   }
 });
