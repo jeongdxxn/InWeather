@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   temp: {
-    fontSize: 156,
+    fontSize: 100,
     marginTop: 30,
   },
   description: {
