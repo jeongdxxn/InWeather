@@ -44,7 +44,8 @@ export default function App() {
       },
       { useGoogleMaps: false }
     );
-    setCity(location[0].city);
+    setCity(location[0]);
+    console.log(location[0]);
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}&units=metric`
     );
@@ -60,7 +61,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.city}>
-        <Text style={styles.cityName}>{city}</Text>
+        <Text style={styles.region}>
+          {city.region} {city.city}
+        </Text>
+        <Text style={styles.cityName}>{city.street}</Text>
       </View>
       <ScrollView
         horizontal
@@ -69,17 +73,17 @@ export default function App() {
         contentContainerStyle={styles.weather}
       >
         {days.length === 0 ? (
-          <View style={{...styles.day, alignItems: "center"}}>
+          <View style={{ ...styles.day, alignItems: "center" }}>
             <ActivityIndicator color="white" size="large" />
           </View>
         ) : (
           days.map((day, idx) => (
             <View key={idx} style={styles.day}>
-              <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                <Text style={styles.temp}>{parseFloat(day.temp.day).toFixed(1)}</Text>
-                <Fontisto style={styles.icon} name={icons[day.weather[0].main]} />
-              </View>
-              <Text style={styles.description}>{day.weather[0].main}</Text>
+              <Fontisto style={styles.icon} name={icons[day.weather[0].main]} />
+              <Text style={styles.temp}>
+                {parseFloat(day.temp.day).toFixed(1)}
+              </Text>
+              <Text style={styles.description} weather={day.weather[0].main}>{day.weather[0].main}</Text>
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
             </View>
           ))
@@ -92,21 +96,29 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "tomato",
+    backgroundColor: "white",
   },
   city: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 50,
+  },
+  region: {
+    fontSize: 20,
   },
   cityName: {
-    fontSize: 68,
+    fontSize: 52,
+    marginTop: 10,
     fontWeight: "200",
   },
-  weather: {},
   day: {
     width: SCREEN_WIDTH,
     alignItems: "center",
+    justifyContent: "center",
+  },
+  weather: {
+    backgroundColor: "white",
   },
   temp: {
     fontSize: 100,
@@ -114,12 +126,11 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 60,
-    marginTop: -30,
   },
   tinyText: {
-    fontSize: 20,
+    fontSize: 14,
   },
   icon: {
-    fontSize: 68,
-  }
+    fontSize: 100,
+  },
 });
